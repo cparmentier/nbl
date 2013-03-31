@@ -2,8 +2,18 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-  <title>NBL.js 2.0 Examples</title>
-  <script src="nbl.js" data-nbl="['http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', 'http://www.google-analytics.com/urchin.js', function(){nbl_init_xmp1()}]"></script>
+  <title>NBL.js 4.0 Examples</title>
+ 
+  <script id="nbljs" data-nbl="['http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', 'http://www.google-analytics.com/urchin.js', function(){nbl_init_xmp1()}]">
+    var _nbl = _nbl || [], nbl = { l : function(s, f){ _nbl.push([s, f]); }, q : { } };
+    setTimeout(function(){
+        var s = document.createElement("script");
+        s.src = "nbl.plus.js";
+        var p = document.getElementById( "nbljs" );
+        p.parentNode.insertBefore(s, p);
+    }, 0);
+  </script>
+  
   <script type="text/javascript">
     // <!--
     var nbl_count = 0, mtime = 0;
@@ -96,7 +106,7 @@
 <body>
 
   <div id="container">
-    <h1>NBL.js 2.0</h1>
+    <h1 id="list">NBL.js 4.0</h1>
     <h2 class="sub">(a tiny non-blocking JavaScript lazy loader)</h2>
     <a href="http://github.com/berklee/nbl/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
     <hr />
@@ -235,6 +245,14 @@ nbl.l([ 3500, function(){nbl_init_xmp3()},
     </div>
 
   </div>
+
+<script>
+nbl.l('jquery',
+	function(){
+		$('#list').html( $('#list').html() + ' rocks !');
+	}
+);
+</script>
 
 </body>
 </html>
