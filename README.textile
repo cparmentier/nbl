@@ -1,4 +1,4 @@
-h1. NBL.js 3.0 - a tiny non-blocking JavaScript/CSS/Image lazy loader
+h1. NBL.js 4.0 - a tiny non-blocking JavaScript/CSS/Image lazy loader
 
 *GZipped*: 631 bytes
 *Minified*: 1079 bytes
@@ -16,24 +16,30 @@ in a faster, more responsive website. All in less than 1kb!
 
 h3. Features
 
+* Non blocking
 * Load scripts asynchronously or in order, or any combination of both
 * Every script can have its own callback
 * A callback for loading all items
 * Can be mixed with your provided function for loading some data
-* [TODO: Trigger a callback on a user definable timeout period]
 * Uses HTML5's data attribute for configuration, so load all scripts with one script-tag
 * Very small code!
+* Stack on script load callback
 
 h2. Usage
 
 Include NBL.js in your pages and let it dynamically load all your JavaScript files by simply including 
 the following tag:
 
-@<script src="nbl.js" data-nbl="[ { load: 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js',
-                                    then: ['jquery.lightbox.min.js', 'jquery.carousel.min.js' ],
-                                    callback:function(e){ jquery_loaded(e) }
-                                  },
-                                  'http://www.google-analytics.com/urchin.js' ]"></script>@
+@<script id="nbljs" data-nbl="['http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', 'http://www.google-analytics.com/urchin.js', function(){nbl_init_xmp1()}]">
+    var _nbl = _nbl || [], nbl = { l : function(s, f){ _nbl.push([s, f]); }, q : { } };
+    setTimeout(function(){
+        var s = document.createElement("script");
+        s.src = "nbl.plus.js";
+        var p = document.getElementById( "nbljs" );
+        p.parentNode.insertBefore(s, p);
+    }, 0);
+  </script>@
+
 
 This will do the following:
 
@@ -85,14 +91,18 @@ h3. [TODO:] Defining a global timeout function and a new timeout:
 @{ load: ['script1.js', 'script2.js', 'script3.js' ], timeout: function(){global_timeout()} }{@
 
 
-h2. Alternative usage
+h2. Dependancy script
 
-If you prefer you can choose to simply include NBL.js in a single line in your HTML pages. This way you can 
-save a HTTP-call from the browser, and it will only add 900 bytes to your HTML page. Simply include the code 
-in @nbl.single.js@ into a @<script>@ tag at the end of your page, and replace @['your', 'scripts', 'here']@ 
-with your own options.
-
-You can't use the @data-nbl@ attribute of the script tag if you use this method.
+Often, you have in your page scripts dependant on the same library or plugin. 
+You can defer exectution after the library has been loaded:
+@<script>
+nbl.l('jquery',
+function(){
+// do something
+}
+);
+</script>@
+will wait for 'jquery' to be loaded before beeing executed
 
 h2. Final note
 
